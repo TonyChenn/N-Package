@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class SettingPage : IPage
 {
+    public static string TAG => "2.设置";
+
     public SettingPage()
     {
         RefreshData();
@@ -15,7 +17,7 @@ public class SettingPage : IPage
 
     public string GetPageName()
     {
-        return "2.设置";
+        return TAG;
     }
 
     #region [Draw UI]
