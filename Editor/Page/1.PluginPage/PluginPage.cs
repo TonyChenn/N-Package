@@ -1,17 +1,18 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 public class PluginPage : IPage
 {
+    public const string TAG = "1.æ’ä»¶ç®¡ç†";
     public string GetPageName()
     {
-        return "1.²å¼ş¹ÜÀí";
+        return TAG;
     }
 
     private Vector2 pluginPos;
-    private string[] pluginTypeItems = new string[] { "È«²¿", "ÒÑ°²×°" };
+    private string[] pluginTypeItems = new string[] { "å…¨éƒ¨", "å·²å®‰è£…" };
     private int selectedPluginTypeIndex;
     public void DrawWndUI(EditorWindow window, object data = null)
     {

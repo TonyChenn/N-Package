@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class SettingPage : IPage
 {
-    public static string TAG => "2.设置";
+    public const string TAG = "2.设置";
 
     public SettingPage()
     {
@@ -97,6 +97,9 @@ public class SettingPage : IPage
                 case FieldType.TextField:
                     DrawTextField(property, title);
                     break;
+                case FieldType.EditField:
+                    DrawEditField(property, title);
+                    break;
                 case FieldType.Folder:
                     DrawSelectFolder(property, title);
                     break;
@@ -153,7 +156,7 @@ public class SettingPage : IPage
     }
 
     /// <summary>
-    /// 文本框
+    /// 文本框(不可编辑)
     /// </summary>
     /// <param name="property"></param>
     /// <param name="fieldName"></param>
@@ -163,6 +166,19 @@ public class SettingPage : IPage
         GUILayout.Space(30);
         string strValue = property.GetValue(null).ToString();
         GUILayout.TextField(strValue);
+    }
+
+    /// <summary>
+    /// 文本框(可编辑)
+    /// </summary>
+    /// <param name="property"></param>
+    /// <param name="fieldName"></param>
+    private void DrawEditField(PropertyInfo property, string fieldName)
+    {
+        GUILayout.Label(fieldName, GUILayout.Width(150));
+        GUILayout.Space(30);
+        string strValue = property.GetValue(null).ToString();
+        property.SetValue(null, GUILayout.TextField(strValue));
     }
 
     /// <summary>

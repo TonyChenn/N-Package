@@ -4,9 +4,10 @@ using UnityEditor;
 
 public class AboutPage : IPage
 {
+    public const string TAG = "4.关于";
     public string GetPageName()
     {
-        return "4.关于";
+        return TAG;
     }
 
     public void DrawWndUI(EditorWindow window, object data = null)

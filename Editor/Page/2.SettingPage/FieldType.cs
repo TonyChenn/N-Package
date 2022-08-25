@@ -8,9 +8,13 @@ public enum FieldType
     /// </summary>
     Button,
     /// <summary>
-    /// 文本框
+    /// 文本框(不可编辑)
     /// </summary>
     TextField,
+    /// <summary>
+    /// 文本框(可编辑)
+    /// </summary>
+    EditField,
     /// <summary>
     /// 选择文件夹
     /// </summary>

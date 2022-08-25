@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class APIPage : IPage
 {
+    public const string TAG = "3.API文档";
+
     public APIPage()
     {
         RefreshData();
@@ -21,7 +23,7 @@ public class APIPage : IPage
 
     public string GetPageName()
     {
-        return "3.API文档";
+        return TAG;
     }
 
     private Vector2 scrollPos;
