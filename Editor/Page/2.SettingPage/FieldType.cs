@@ -4,10 +4,6 @@
 public enum FieldType
 {
     /// <summary>
-    /// 按钮
-    /// </summary>
-    Button,
-    /// <summary>
     /// 文本框(不可编辑)
     /// </summary>
     TextField,

@@ -91,9 +91,6 @@ public class SettingPage : IPage
 
             switch (attr.FieldType)
             {
-                case FieldType.Button:
-                    DrawButton(title, attr.Text, attr.Callback);
-                    break;
                 case FieldType.TextField:
                     DrawTextField(property, title);
                     break;
