@@ -23,4 +23,8 @@ public enum FieldType
     /// Toggle
     /// </summary>
     Toggle,
+    /// <summary>
+    /// 枚举类型
+    /// </summary>
+    Enum,
 }

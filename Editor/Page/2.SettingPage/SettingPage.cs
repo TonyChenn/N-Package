@@ -106,6 +106,9 @@ public class SettingPage : IPage
                 case FieldType.Toggle:
                     DrawToggle(property, title);
                     break;
+                case FieldType.Enum:
+                    DrawEnum(property, title);
+                    break;
                 default:
                     GUILayout.Button(property.PropertyType.ToString());
                     break;
@@ -224,6 +227,15 @@ public class SettingPage : IPage
         bool boolValue = (bool)property.GetValue(null);
         boolValue = GUILayout.Toggle(boolValue, "");
         property.SetValue(null, boolValue);
+    }
+
+    private void DrawEnum(PropertyInfo property, string fieldName)
+    {
+        GUILayout.Label(fieldName, GUILayout.Width(150));
+        GUILayout.Space(30);
+        BuildAssetBundleOptions option = (BuildAssetBundleOptions)property.GetValue(null);
+        option = (BuildAssetBundleOptions)EditorGUILayout.EnumPopup(option);
+        property.SetValue(null, option);
     }
 
     #endregion

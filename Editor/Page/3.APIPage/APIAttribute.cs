@@ -1,6 +1,6 @@
-using System;
+ï»¿using System;
 
-[APIInfo("NPackage", "APIPage.APIInfoAttribute", "Ê¹ÓÃ´ËÌØĞÔĞŞÊÎµÄÀà»ò½Ó¿Ú£¬¿ÉÒÔÔÚAPI½Ó¿Ú½çÃæÖĞÏÔÊ¾×Ô¶¨ÒåµÄÃèÊöĞÅÏ¢¡£")]
+[APIInfo("NPackage", "APIPage.APIInfoAttribute", "ä½¿ç”¨æ­¤ç‰¹æ€§ä¿®é¥°çš„ç±»æˆ–æ¥å£ï¼Œå¯ä»¥åœ¨APIæ¥å£ç•Œé¢ä¸­æ˜¾ç¤ºè‡ªå®šä¹‰çš„æè¿°ä¿¡æ¯ã€‚")]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
 public class APIInfoAttribute : Attribute
 {

@@ -1,7 +1,9 @@
 {
     "name": "N-Package",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:08253c93f07cbdc4fa57c9519da2fc26"
+    ],
     "includePlatforms": [
         "Editor"
     ],

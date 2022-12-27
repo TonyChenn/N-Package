@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -9,6 +6,7 @@ using UnityEngine;
 public class APIPage : IPage
 {
     public const string TAG = "3.API文档";
+    private TreeView treeView = new TreeView();
 
     public APIPage()
     {
@@ -34,7 +32,7 @@ public class APIPage : IPage
         DrawSearchGUI();
         scrollPos = GUILayout.BeginScrollView(scrollPos);
 
-        TreeView.DrawUI(root, 1);
+        treeView.DrawUI(root, 1);
 
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
@@ -48,10 +46,10 @@ public class APIPage : IPage
     }
     private void DrawAPIDetail()
     {
-        if (TreeView.CurSelectNode != null)
+        if (treeView.CurSelectNode != null)
         {
             GUILayout.BeginVertical();
-            APIInfoAttribute info = (APIInfoAttribute)TreeView.CurSelectNode.data;
+            APIInfoAttribute info = (APIInfoAttribute)treeView.CurSelectNode.data;
             GUILayout.Label(info.ClassName, EditorStyles.boldLabel);
             GUILayout.Space(5);
             GUILayout.Label(info.Description);
