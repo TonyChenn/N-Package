@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,12 +29,16 @@ public class PluginPage : IPage
 
         pluginPos = GUILayout.BeginScrollView(pluginPos);
         {
-            for (int i = 0; i < 50; i++)
+            if(selectedPluginTypeIndex == 0)
             {
-                GUILayout.Button("123");
+                DrawAllPackagesView();
             }
-
+            else
+            {
+                DrawInstalledPackagesView();
+            }
         }
+
         GUILayout.EndScrollView();
 
         GUILayout.EndVertical();
@@ -46,5 +51,66 @@ public class PluginPage : IPage
         GUILayout.BeginHorizontal();
         searchText = EditorGUILayout.TextField("", searchText, "SearchTextField");
         GUILayout.EndHorizontal();
+    }
+
+
+    private string selectedName = null;
+    void DrawInstalledPackagesView()
+    {
+        string folder = Path_Package.InstallFolder;
+        if(!Directory.Exists(folder))
+            Directory.CreateDirectory(folder);
+
+        DirectoryInfo[] folders = new DirectoryInfo(folder).GetDirectories();
+
+        if(folders.Length == 0)
+        {
+            DrawEmptyTip();
+            return;
+        }
+
+        if(selectedName == null)
+            selectedName = folders[0].Name;
+
+        for (int i = 0;i < folders.Length;i++)
+        {
+            GUILayout.BeginHorizontal("box");
+            GUIContent content = EditorGUIUtility.IconContent("Assembly Icon");
+            GUILayout.Label(content, GUILayout.Width(30), GUILayout.Height(20));
+            GUILayout.Label(folders[i].Name);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            var rect = GUILayoutUtility.GetLastRect();
+            if (selectedName == folders[i].Name)
+            {
+                GUI.Box(rect, "", "SelectionRect");
+            }
+            if (rect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseUp)
+            {
+                selectedName = folders[i].Name;
+                Event.current.Use();
+            }
+        }
+    }
+
+    void DrawAllPackagesView()
+    {
+        DrawEmptyTip();
+    }
+
+    private void DrawEmptyTip()
+    {
+        GUILayout.BeginVertical();
+        GUILayout.FlexibleSpace();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        GUILayout.Label("这里空空如也");
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+
+        GUILayout.FlexibleSpace();
+        GUILayout.EndVertical();
     }
 }

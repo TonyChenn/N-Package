@@ -1,15 +1,22 @@
-﻿using System;
+﻿using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using System;
 using System.Reflection;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class APIPage : IPage
 {
     public const string TAG = "3.API文档";
     private TreeView treeView = new TreeView();
 
+    private MarkdownViewer markdownViewer;
+
     public APIPage()
     {
+        markdownViewer = new MarkdownViewer(null, "");
+
         RefreshData();
         init();
     }
@@ -17,6 +24,7 @@ public class APIPage : IPage
     private void init()
     {
         GUITextStyle.GetTextStyle(FontStyle.Bold, 23);
+
     }
 
     public string GetPageName()
@@ -42,21 +50,29 @@ public class APIPage : IPage
         GUILayout.Space(10);
 
 
-        DrawAPIDetail();
+        DrawAPIDetail(window.position);
     }
-    private void DrawAPIDetail()
+    private void DrawAPIDetail(Rect windowRect)
     {
         if (treeView.CurSelectNode != null)
         {
-            GUILayout.BeginVertical();
             APIInfoAttribute info = (APIInfoAttribute)treeView.CurSelectNode.data;
-            GUILayout.Label(info.ClassName, EditorStyles.boldLabel);
-            GUILayout.Space(5);
-            GUILayout.Label(info.Description);
-            GUILayout.Button("", GUILayout.Height(1));
-            GUILayout.Space(5);
+            // debug use
+            //GUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(windowRect.width-440), GUILayout.MinHeight(10));
+            //GUILayout.Label("111");
+            //GUILayout.EndVertical();
 
-            GUILayout.EndVertical();
+            var lastRect = GUILayoutUtility.GetLastRect();
+            var rect = new Rect(lastRect.x, lastRect.y + lastRect.height,
+                            windowRect.width - 440, windowRect.height - 10);
+            markdownViewer.DrawWithRect(rect);
+
+            StringBuilder builder = new StringBuilder();
+            builder.Append("# ");
+            builder.Append(info.ClassName);
+            builder.AppendLine();
+            builder.Append("## ").Append(info.Description);
+            markdownViewer.UpdateContent(builder.ToString());
         }
     }
 

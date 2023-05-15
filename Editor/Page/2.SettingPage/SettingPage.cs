@@ -22,7 +22,7 @@ public class SettingPage : IPage
 
     #region [Draw UI]
     private Vector3 settingPos;
-    private int selectIndex;
+    private string selectKey;
     private Dictionary<string, List<Type>> dict = new Dictionary<string, List<Type>>();
 
     public void DrawWndUI(EditorWindow window, object data = null)
@@ -32,7 +32,28 @@ public class SettingPage : IPage
         GUILayout.BeginVertical(GUILayout.Width(200), GUILayout.MinHeight(window.position.height - 10));
         GUILayout.Space(5);
         settingPos = EditorGUILayout.BeginScrollView(settingPos);
-        selectIndex = GUILayout.SelectionGrid(selectIndex, dict.Keys.ToArray(), 1);
+        {
+            foreach (string key in dict.Keys)
+            {
+                GUILayout.BeginHorizontal("box");
+                GUILayout.Space(10);
+                GUILayout.Label(key);
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+
+                var rect = GUILayoutUtility.GetLastRect();
+
+                if (selectKey == key)
+                {
+                    GUI.Box(rect, "", "SelectionRect");
+                }
+                if (rect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseUp)
+                {
+                    selectKey = key;
+                    Event.current.Use();
+                }
+            }
+        }
         EditorGUILayout.EndScrollView();
         GUILayout.EndVertical();
 
@@ -43,9 +64,12 @@ public class SettingPage : IPage
         // right section
         GUILayout.BeginVertical();
         GUILayout.Space(5);
-        var item = dict.ElementAt(selectIndex);
 
-        foreach (Type type_item in item.Value)
+        if(selectKey == null)
+        {
+            selectKey = dict.Keys.FirstOrDefault();
+        }
+        foreach (Type type_item in dict[selectKey])
         {
             // 绘制字段
             foreach (PropertyInfo field in type_item.GetProperties())
@@ -68,12 +92,14 @@ public class SettingPage : IPage
         if (string.IsNullOrEmpty(tag)) return;
 
         var list = dict.Keys.ToList<string>();
-        selectIndex = list.IndexOf(tag);
-
-        if (selectIndex == -1)
+        if(dict.ContainsKey(tag))
+        {
+            selectKey = tag;
+        }
+        else
         {
             Debug.LogWarning($"\"{tag}\"不存在");
-            selectIndex = 0;
+            selectKey = dict.Keys.First();
         }
     }
 
@@ -242,6 +268,7 @@ public class SettingPage : IPage
 
 
     #region [刷新数据]
+
     private void RefreshData()
     {
         dict.Clear();
@@ -270,5 +297,6 @@ public class SettingPage : IPage
             }
         }
     }
+
     #endregion
 }
