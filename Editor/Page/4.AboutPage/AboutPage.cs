@@ -23,20 +23,25 @@ public class AboutPage : IPage
 
         EditorGUILayout.LabelField("关于");
 
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-
         GUILayout.BeginVertical();
         GUILayout.FlexibleSpace();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
         GUILayout.Label("TonyChenn");
-        if(GUILayout.Button("https://blog.tonychenn.cn", blueTextStyle))
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("https://blog.tonychenn.cn", blueTextStyle))
         {
             Application.OpenURL("https://blog.tonychenn.cn");
         }
         GUILayout.FlexibleSpace();
-        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
 
         GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
     }
 }
