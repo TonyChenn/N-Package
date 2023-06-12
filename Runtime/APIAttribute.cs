@@ -1,6 +1,6 @@
 ﻿using System;
 
-[APIInfo("NPackage", "APIPage.APIInfoAttribute", "使用此特性修饰的类或接口，可以在API接口界面中显示自定义的描述信息。")]
+[APIInfo("NPackage", "APIInfoAttribute", @"使用此特性修饰的类或接口，可以在API接口界面中显示自定义的描述信息。")]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
 public class APIInfoAttribute : Attribute
 {

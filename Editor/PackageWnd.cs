@@ -16,7 +16,7 @@ public class PackageWnd : EditorWindow
     [MenuItem("Tools/Perference...")]
     public static void ShowWnd()
     {
-        GetWindow<PackageWnd>(false, "PackageMgr", true);
+        GetWindow<PackageWnd>(false, "Perference", true);
     }
 
     public static void ShowWnd(string tag, string data = null)
