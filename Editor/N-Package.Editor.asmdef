@@ -2,7 +2,6 @@
     "name": "N-Package",
     "rootNamespace": "",
     "references": [
-        "GUID:08253c93f07cbdc4fa57c9519da2fc26",
         "GUID:f66424d0bbc2ec04c996bcc76cf36e6d"
     ],
     "includePlatforms": [
