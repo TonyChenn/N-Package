@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 
 [APIInfo("NPackage", "SettingPropertyAttribute", "使用`SettingPropertyAttribute`修饰的字段,会根据传入的`FieldType`类型在对应设置界面绘制出不同的按钮，输入框，选择框等")]

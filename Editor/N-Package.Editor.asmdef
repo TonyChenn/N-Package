@@ -1,5 +1,5 @@
 {
-    "name": "N-Package",
+    "name": "N-Package.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:f66424d0bbc2ec04c996bcc76cf36e6d"
