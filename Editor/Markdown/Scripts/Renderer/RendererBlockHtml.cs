@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 using Markdig.Renderers;
 using Markdig.Syntax;
@@ -11,7 +11,7 @@ public class RendererBlockHtml : MarkdownObjectRenderer<RendererMarkdown, HtmlBl
 {
     protected override void Write(RendererMarkdown renderer, HtmlBlock block)
     {
-        if (!Preferences.StripHTML)
+        if (!Path_Markdown.StripHTML)
         {
             renderer.WriteLeafRawLines(block);
             renderer.FinishBlock();

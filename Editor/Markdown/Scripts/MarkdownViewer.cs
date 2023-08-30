@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Markdig;
 using UnityEditor;
 using UnityEngine;
@@ -68,22 +68,15 @@ public class MarkdownViewer
         var builder = new LayoutBuilder(context);
         var renderer = new RendererMarkdown(builder);
 
-        var pipelineBuilder = new MarkdownPipelineBuilder()
-            .UseAutoLinks()
-        ;
-
-        if (!string.IsNullOrEmpty(Preferences.JIRA))
-        {
-            pipelineBuilder.UseJiraLinks(new JiraLinkOptions(Preferences.JIRA));
-        }
+        var pipelineBuilder = new MarkdownPipelineBuilder().UseAutoLinks();
 
 
-        if (Preferences.PipedTables)
+        if (Path_Markdown.PipedTables)
         {
             pipelineBuilder.UsePipeTables(new PipeTableOptions
             {
-                RequireHeaderSeparator = Preferences.PipedTablesRequireRequireHeaderSeparator
-            });
+                RequireHeaderSeparator = Path_Markdown.HeaderSeparator
+			});
         }
 
 
