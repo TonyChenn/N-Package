@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -93,17 +91,17 @@ public class PackageWnd : EditorWindow
     {
         if (keys.Count == 0) return;
 
-        string pageName = keys[selectedPageIndex];
         Type classType = values[selectedPageIndex];
 
+        object ins = GetPageClass(classType);
         MethodInfo method = classType.GetMethod("DrawWndUI", new Type[] { typeof(EditorWindow), typeof(object) });
-        object o = GetPageClass(classType);
+
 
         // TODO 待优化
         if (m_needRefresh)
-            method.Invoke(o, new object[] { this, m_data });
+            method.Invoke(ins, new object[] { this, m_data });
         else
-            method.Invoke(o, new object[] { this, null });
+            method.Invoke(ins, new object[] { this, null });
     }
     #endregion
 
@@ -115,29 +113,18 @@ public class PackageWnd : EditorWindow
     {
         List<KeyValuePair<string, Type>> list = new List<KeyValuePair<string, Type>>();
 
-        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (Assembly assembly in assemblies)
-        {
-            var classTypes = assembly.GetTypes();
-            for (int i = 0; i < classTypes.Length; i++)
-            {
-                if (classTypes[i].IsInterface) continue;
+		var clazzList = ReflectionUtil.GetImplementsInterfaceClass<IPage>();
+		foreach (var clazz in clazzList)
+		{
+			MethodInfo method = ReflectionUtil.GetMethodInfo(clazz, "GetPageName");
+			if (method == null) continue;
 
-                // 所有有接口的类
-                Type ins = classTypes[i].GetInterface("IPage");
-                MethodInfo method = classTypes[i].GetMethod("GetPageName", Type.EmptyTypes);
+			object ins = GetPageClass(clazz);
+			string moduleName = ins.InvokeMethod<string>("GetPageName");
+			list.Add(new KeyValuePair<string, Type>(moduleName, clazz));
+		}
 
-                if (ins != null && method != null)
-                {
-                    object o = GetPageClass(classTypes[i]);
-                    string moduleName = method.Invoke(o, null).ToString();
-
-                    list.Add(new KeyValuePair<string, Type>(moduleName, classTypes[i]));
-                }
-            }
-        }
-
-        list.Sort((a, b) => a.Key.CompareTo(b.Key));
+		list.Sort((a, b) => a.Key.CompareTo(b.Key));
 
         keys.Clear();
         values.Clear();

@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -90,29 +88,18 @@ public class APIPage : IPage
     {
         root.children.Clear();
 
-        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+		var list = ReflectionUtil.GetAllAttribute<APIInfoAttribute>(false);
+		foreach (APIInfoAttribute attribute in list)
+		{
+			string groupName = attribute.GroupName;
 
-        for (int i = 0, iMax = assemblies.Length; i < iMax; i++)
-        {
-            Assembly assembly = assemblies[i];
+			// 先确定分组
+			if (!root.HasChild(groupName)) root.AddChild(new TreeNode(groupName));
 
-            Type[] classTypes = assembly.GetTypes();
-            for (int j = 0, jMax = classTypes.Length; j < jMax; j++)
-            {
-                APIInfoAttribute attribute = classTypes[j].GetCustomAttribute<APIInfoAttribute>(false);
-                if (attribute == null) continue;
-
-                string groupName = attribute.GroupName;
-
-                // 先确定分组
-                if (!root.HasChild(groupName))
-                    root.AddChild(new TreeNode(groupName));
-
-                TreeNode groupNode = root.GetChild(groupName);
-                if (groupNode == null) return;
-                groupNode.AddChild(new TreeNode(attribute.ClassName, attribute));
-            }
-        }
+			TreeNode groupNode = root.GetChild(groupName);
+			if (groupNode == null) return;
+			groupNode.AddChild(new TreeNode(attribute.ClassName, attribute));
+		}
     }
     #endregion
 }

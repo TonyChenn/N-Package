@@ -11,9 +11,9 @@ public class EditorIcons : EditorWindow
     [MenuItem("Tools/Editor Icons", priority = -1001)]
     public static void EditorIconsOpen()
     {
-        var w = CreateWindow<EditorIcons>("Editor Icons");
-        w.ShowUtility();
-        w.minSize = new Vector2(320, 450);
+        var window = CreateWindow<EditorIcons>("Editor Icons");
+		window.ShowUtility();
+		window.minSize = new Vector2(320, 450);
     }
 
     static bool viewBigIcons = true;
@@ -88,48 +88,22 @@ public class EditorIcons : EditorWindow
 
     private void OnEnable()
     {
-        //InitIcons();
-        //var all_icons = iconContentListAll.Select(x => x.tooltip).ToArray();
         var all_icons = ico_list.Where(x => GetIcon(x) != null);
-        //List<string> found = new List<string>();
         List<string> unique = new List<string>();
-        //var skip_flag = HideFlags.HideInInspector | HideFlags.HideAndDontSave;
-        //int unique_to_resources = 0, skipped_empty_str = 0, skipped_flags = 0, 
-        //    skipped_not_persistent = 0, skipped_nulls = 0, unique_to_list = 0;
+
 
         foreach (Texture2D x in Resources.FindObjectsOfTypeAll<Texture2D>())
         {
-            //if (string.IsNullOrEmpty(x.name)) skipped_empty_str++;                                      // skipped 10 empty
-            //if (!EditorUtility.IsPersistent(x)) skipped_not_persistent++;                               // skipped 39 none persistent
-            //if (x.hideFlags != HideFlags.HideAndDontSave && x.hideFlags != skip_flag) skipped_flags++;  // skipped 27 icons
-
             GUIContent icoContent = GetIcon(x.name);
-            if (icoContent == null) continue; // skipped 14 icons 
-            //{ 
-            //    skipped_nulls++; 
-            //    continue; 
-            //}
+            if (icoContent == null) continue;
 
             if (!all_icons.Contains(x.name))
             {
-                //unique_to_resources++;
                 unique.Add(x.name);
             }
-
-            //found.Add( x.name );
         }
 
-        //foreach (var ico in all_icons) if (!found.Contains(ico)) unique_to_list++;
-
-        //Debug.Log( $"Resources skipped nulls={skipped_nulls} empty={skipped_empty_str} flags={skipped_flags}" );
-        //Debug.Log("Resources skipped_not_persistent=" + skipped_not_persistent);
-        //Debug.Log($"totals , list: {all_icons.Length} resource: {found.Count}");
-        //Debug.Log($"Unique list={ unique_to_list } resources={unique_to_resources}") ;
-
         ico_list = ico_list.ToList().Concat(unique).ToArray();
-
-        // Static list icons count : 1315 ( unique = 749 )
-        // Found icons in resources : 1416 ( unique = 855 )
 
         Resources.UnloadUnusedAssets();
         System.GC.Collect();

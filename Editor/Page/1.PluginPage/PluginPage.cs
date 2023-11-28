@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -7,18 +5,16 @@ using UnityEngine;
 public class PluginPage : IPage
 {
     public const string TAG = "1.插件管理";
-    public string GetPageName()
-    {
-        return TAG;
-    }
+	public string GetPageName() => TAG;
 
-    private Vector2 pluginPos;
+
+	private Vector2 pluginPos;
     private string[] pluginTypeItems = new string[] { "全部", "已安装" };
     private int selectedPluginTypeIndex;
     public void DrawWndUI(EditorWindow window, object data = null)
     {
         GUILayout.BeginVertical(GUILayout.Width(200), GUILayout.MinHeight(window.position.height - 10));
-        DrawSearchGUI();
+        drawSearchGUI();
 
         GUILayout.BeginHorizontal();
         selectedPluginTypeIndex = GUILayout.SelectionGrid(selectedPluginTypeIndex, pluginTypeItems, 2);
@@ -31,11 +27,11 @@ public class PluginPage : IPage
         {
             if(selectedPluginTypeIndex == 0)
             {
-                DrawAllPackagesView();
+                drawAllPackagesView();
             }
             else
             {
-                DrawInstalledPackagesView();
+                drawInstalledPackagesView();
             }
         }
 
@@ -45,7 +41,7 @@ public class PluginPage : IPage
         GUILayout.Button("", GUILayout.Width(1), GUILayout.Height(window.position.height));
     }
     private string searchText;
-    void DrawSearchGUI()
+    private void drawSearchGUI()
     {
         GUILayout.Space(10);
         GUILayout.BeginHorizontal();
@@ -55,7 +51,7 @@ public class PluginPage : IPage
 
 
     private string selectedName = null;
-    void DrawInstalledPackagesView()
+    private void drawInstalledPackagesView()
     {
         string folder = Path_Package.InstallFolder;
         if(!Directory.Exists(folder))
@@ -65,7 +61,7 @@ public class PluginPage : IPage
 
         if(folders.Length == 0)
         {
-            DrawEmptyTip();
+            drawEmptyTip();
             return;
         }
 
@@ -94,12 +90,12 @@ public class PluginPage : IPage
         }
     }
 
-    void DrawAllPackagesView()
+    private void drawAllPackagesView()
     {
-        DrawEmptyTip();
+        drawEmptyTip();
     }
 
-    private void DrawEmptyTip()
+    private void drawEmptyTip()
     {
         GUILayout.BeginVertical();
         GUILayout.FlexibleSpace();

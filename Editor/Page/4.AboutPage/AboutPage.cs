@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,12 +6,10 @@ public class AboutPage : IPage
     private GUIStyle blueTextStyle;
 
     public const string TAG = "4.关于";
-    public string GetPageName()
-    {
-        return TAG;
-    }
+	public string GetPageName() => TAG;
 
-    public void DrawWndUI(EditorWindow window, object data = null)
+
+	public void DrawWndUI(EditorWindow window, object data = null)
     {
         if(blueTextStyle== null)
         {

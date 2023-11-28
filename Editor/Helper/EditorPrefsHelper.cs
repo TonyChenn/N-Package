@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.Reflection;
-using Object = UnityEngine.Object;
+using UObject = UnityEngine.Object;
 
 namespace NCore.Editor
 {
@@ -22,43 +21,18 @@ namespace NCore.Editor
         [MenuItem("Tools/Prefs/Clear All EditorPrefs")]
         static void ClearAllEditorPrefs()
         {
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            for (int i = 0, iMax = assemblies.Length; i < iMax; i++)
-            {
-                ClearAssemblyEditorPrefs(assemblies[i]);
-            }
+			List<Type> clazzList = ReflectionUtil.GetImplementsInterfaceClass<IEditorPrefs>();
+			foreach (var clazz in clazzList)
+			{
+				object o = Activator.CreateInstance(clazz);
+				o.InvokeMethod("ReleaseEditorPrefs");
+			}
 
             // 自身的
             for (int i = 0, iMax = key_obj_list.Count; i < iMax; i++)
                 EditorPrefs.DeleteKey(key_obj_list[i]);
 
             Debug.Log("清理EditorPrefs完成");
-        }
-
-        /// <summary>
-        /// 删除一个程序集中的EditorPrefs
-        /// </summary>
-        /// <param name="assembly"></param>
-        static void ClearAssemblyEditorPrefs(Assembly assembly)
-        {
-            Type[] types = assembly.GetTypes();
-            for (int i = 0, iMax = types.Length; i < iMax; i++)
-            {
-                //如果是接口
-                if (types[i].IsInterface) continue;
-
-                Type[] ins = types[i].GetInterfaces();
-                foreach (var item in ins)
-                {
-                    if (item == typeof(IEditorPrefs))
-                    {
-                        object o = Activator.CreateInstance(types[i]);
-                        MethodInfo method = item.GetMethod("ReleaseEditorPrefs");
-                        method?.Invoke(o, null);
-                        break;
-                    }
-                }
-            }
         }
 
         #region Key
@@ -160,8 +134,8 @@ namespace NCore.Editor
         }
 
         //Object
-        public static T Get<T>(string prefsKey, T defaultValue) where T : Object
-        {
+        public static T Get<T>(string prefsKey, T defaultValue) where T : UObject
+		{
             if (!key_obj_list.Contains(prefsKey))
                 key_obj_list.Add(prefsKey);
 
@@ -183,11 +157,11 @@ namespace NCore.Editor
         /// <summary>
         /// 加载Asset
         /// </summary>
-        static T LoadAsset<T>(string path) where T : Object
-        {
+        static T LoadAsset<T>(string path) where T : UObject
+		{
             if (string.IsNullOrEmpty(path)) return null;
 
-            Object obj = AssetDatabase.LoadMainAssetAtPath(path);
+			UObject obj = AssetDatabase.LoadMainAssetAtPath(path);
             if (obj == null) return null;
 
             T val = obj as T;
@@ -205,7 +179,7 @@ namespace NCore.Editor
             return null;
         }
 
-        public static void SetObject(string prefsKey, Object obj)
+        public static void SetObject(string prefsKey, UObject obj)
         {
             if (!key_obj_list.Contains(prefsKey))
                 key_obj_list.Add(prefsKey);

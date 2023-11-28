@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,13 +14,10 @@ public class SettingPage : IPage
         RefreshData();
     }
 
-    public string GetPageName()
-    {
-        return TAG;
-    }
+	public string GetPageName() => TAG;
 
-    #region [Draw UI]
-    private Vector3 settingPos;
+	#region [Draw UI]
+	private Vector3 settingPos;
     private string selectKey;
     private Dictionary<string, List<Type>> dict = new Dictionary<string, List<Type>>();
 
@@ -65,10 +61,8 @@ public class SettingPage : IPage
         GUILayout.BeginVertical();
         GUILayout.Space(5);
 
-        if(selectKey == null)
-        {
-            selectKey = dict.Keys.FirstOrDefault();
-        }
+		selectKey ??= dict.Keys.FirstOrDefault();
+
         foreach (Type type_item in dict[selectKey])
         {
             // 绘制字段
@@ -88,10 +82,8 @@ public class SettingPage : IPage
     {
         if (data == null) return;
         string tag = (string)data;
-
         if (string.IsNullOrEmpty(tag)) return;
 
-        var list = dict.Keys.ToList<string>();
         if(dict.ContainsKey(tag))
         {
             selectKey = tag;
@@ -273,29 +265,18 @@ public class SettingPage : IPage
     {
         dict.Clear();
 
-        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (Assembly assembly in assemblies)
-        {
-            var classTypes = assembly.GetTypes();
-            for (int i = 0; i < classTypes.Length; i++)
-            {
-                if (classTypes[i].IsInterface) continue;
+		List<Type> clazzList = ReflectionUtil.GetImplementsInterfaceClass<IPathConfig>();
+		foreach (var clazz in clazzList)
+		{
+			 MethodInfo methodInfo = ReflectionUtil.GetMethodInfo(clazz, "GetModuleName");
+			if (methodInfo == null) continue;
 
-                // 所有有接口的类
-                Type ins = classTypes[i].GetInterface("IPathConfig");
-                MethodInfo method = classTypes[i].GetMethod("GetModuleName", Type.EmptyTypes);
-
-                if (ins != null && method != null)
-                {
-                    object o = Activator.CreateInstance(classTypes[i]);
-                    string moduleName = method.Invoke(o, new object[] { }).ToString();
-
-                    if (!dict.ContainsKey(moduleName))
-                        dict[moduleName] = new List<Type>();
-                    dict[moduleName.ToString()].Add(classTypes[i]);
-                }
-            }
-        }
+			object ins = Activator.CreateInstance(clazz);
+			string moduleName = ins.InvokeMethod<string>("GetModuleName");
+			
+			if (!dict.ContainsKey(moduleName)) dict[moduleName] = new List<Type>();
+			dict[moduleName.ToString()].Add(clazz);
+		}
     }
 
     #endregion
