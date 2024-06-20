@@ -1,4 +1,4 @@
-﻿/// <summary>
+/// <summary>
 /// 字段类型
 /// </summary>
 public enum FieldType

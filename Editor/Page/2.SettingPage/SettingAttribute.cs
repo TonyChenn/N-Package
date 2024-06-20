@@ -5,19 +5,20 @@ using System;
 [AttributeUsage(AttributeTargets.Property)]
 public class SettingPropertyAttribute : Attribute
 {
-    private FieldType fieldType;
-    private string title;
-    private string text;
+	private FieldType fieldType;
+	private string title;
+	private string groupName;
 
-    public SettingPropertyAttribute(FieldType fieldType, string title)
-    {
-        this.fieldType = fieldType;
-        this.title = title;
-    }
+	public SettingPropertyAttribute(FieldType fieldType, string title, string group = null)
+	{
+		this.fieldType = fieldType;
+		this.title = title;
+		this.groupName = group;
+	}
 
-    public string Title { get { return title; } }
-    public FieldType FieldType { get { return fieldType; } }
-    public string Text { get { return text; } }
+	public string Title { get { return title; } }
+	public FieldType FieldType { get { return fieldType; } }
+	public string GroupName { get { return groupName; } }
 }
 
 
@@ -25,15 +26,18 @@ public class SettingPropertyAttribute : Attribute
 [AttributeUsage(AttributeTargets.Method)]
 public class SettingMethodAttribute : Attribute
 {
-    private string title;
-    private string text;
+	private string title;
+	private string text;
+	private string groupName;
 
-    public SettingMethodAttribute(string title, string text)
-    {
-        this.title = title;
-        this.text = text;
-    }
+	public SettingMethodAttribute(string title, string text, string groupName = null)
+	{
+		this.title = title;
+		this.text = text;
+		this.groupName = groupName;
+	}
 
-    public string Title { get { return title; } }
-    public string Text { get { return text; } }
+	public string Title { get { return title; } }
+	public string Text { get { return text; } }
+	public string GroupName { get { return groupName; } }
 }

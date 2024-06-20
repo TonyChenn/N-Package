@@ -1,13 +1,11 @@
-using NCore.Editor;
-using System.Collections;
-using System.Collections.Generic;
+	using NCore.Editor;
 using UnityEngine;
 
 public class Path_Package : IPathConfig, IEditorPrefs
 {
     private static string default_ex_pkg_install_folder => $"{Application.dataPath}/Modules";
 
-    [SettingProperty(FieldType.Folder,"°²×°Ä¿Â¼£º")]
+    [SettingProperty(FieldType.Folder,"å®‰è£…ç›®å½•ï¼š")]
     public static string InstallFolder
     {
         get { return EditorPrefsHelper.GetString("Path_Package_InstallFolder", default_ex_pkg_install_folder); }
@@ -15,7 +13,7 @@ public class Path_Package : IPathConfig, IEditorPrefs
     }
 
     #region IPathConfig,IEditorPrefs
-    public const string TAG = "°ü¹ÜÀíÆ÷ÅäÖÃ";
+    public const string TAG = "åŒ…ç®¡ç†å™¨é…ç½®";
     public string GetModuleName() { return TAG; }
 
     public void ReleaseEditorPrefs()

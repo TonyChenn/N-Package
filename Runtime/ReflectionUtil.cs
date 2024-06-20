@@ -58,9 +58,18 @@ public static class ReflectionUtil
 	private static readonly object[] EMPTY_PARAMS = new object[] { };
 
 	#region Assembly
+
+#if !UNITY_EDITOR
+	private static Assembly[] assemblies = null;
+#endif
 	public static Assembly[] GetAssemblies()
 	{
+#if UNITY_EDITOR
 		return AppDomain.CurrentDomain.GetAssemblies();
+#else
+		assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+		return assemblies;
+#endif
 	}
 	#endregion
 
@@ -80,7 +89,7 @@ public static class ReflectionUtil
 		for (int i = 0; i < assemblies.Length; i++)
 		{
 			var query = from _type in assemblies[i].GetTypes()
-						where !_type.IsInterface && !_type.IsAbstract && _type.GetInterface(type.ToString()) != null
+						where !_type.IsInterface && !_type.IsAbstract && _type.GetInterface(type.Name) != null
 						select _type;
 			foreach (Type item in query)
 			{
@@ -90,6 +99,7 @@ public static class ReflectionUtil
 
 		return result;
 	}
+
 	#endregion
 
 
@@ -208,7 +218,7 @@ public static class ReflectionUtil
 	/// <typeparam name="T">要获取的Attribute，必须继承自Attribute</typeparam>
 	/// <param name="inherit">是否搜索子类</param>
 	/// <returns>返回搜索到的所有 <T> 类型的 Attribute</returns>
-	public static List<T> GetAllAttribute<T>(bool inherit) where T: Attribute
+	public static List<T> GetAllAttribute<T>(bool inherit) where T : Attribute
 	{
 		Type type = typeof(T);
 		var assemblies = GetAssemblies();
@@ -217,7 +227,7 @@ public static class ReflectionUtil
 		for (int i = 0; i < assemblies.Length; i++)
 		{
 			Type[] types = assemblies[i].GetTypes();
-			for (int j = 0,jMax = types.Length; j < jMax; j++)
+			for (int j = 0, jMax = types.Length; j < jMax; j++)
 			{
 				T attribute = types[j].GetCustomAttribute<T>(inherit);
 				if (attribute == null) continue;
