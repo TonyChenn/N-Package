@@ -4,11 +4,11 @@ public class Path_UnityEditorGUIExtention : IPathConfig, IEditorPrefs
 {
 	private const string TAG = "UnityEditorGUIEx";
 
-	[SettingProperty(FieldType.Toggle, "标记 MissingComponent", "Hierarchy")]
-	public static bool HierarchyShowMissingComponent
+	[SettingProperty(FieldType.Toggle, "标记 MissingComponent")]
+	public static bool ShowMissingComponent
 	{
-		get => EditorPrefsHelper.GetBool($"Path_Package_{TAG}_HierarchyShowMissingComponent", true);
-		set => EditorPrefsHelper.SetBool($"Path_Package_{TAG}_HierarchyShowMissingComponent", value);
+		get => EditorPrefsHelper.GetBool($"Path_Package_{TAG}_ShowMissingComponent", true);
+		set => EditorPrefsHelper.SetBool($"Path_Package_{TAG}_ShowMissingComponent", value);
 	}
 
 	[SettingProperty(FieldType.Toggle,"显示BundleName", "Project")]

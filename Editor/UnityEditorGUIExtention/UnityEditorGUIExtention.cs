@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UnityEditorGUIExtention
 {
@@ -24,9 +25,9 @@ public class UnityEditorGUIExtention
 		GameObject gameObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
 		if (gameObject == null) return;
 
-		if (Path_UnityEditorGUIExtention.HierarchyShowMissingComponent)
+		if (Path_UnityEditorGUIExtention.ShowMissingComponent)
 		{
-			var missingComponent = gameObject.GetComponents<MonoBehaviour>().Any(c => c == null);
+			var missingComponent = gameObject.GetComponentsInChildren<MonoBehaviour>().Any(c => c == null);
 			if (!missingComponent) return;
 
 			Rect rect = selectionRect;
@@ -38,5 +39,19 @@ public class UnityEditorGUIExtention
 
 	private static void ProjectWindowItemOnGUI(string guid, Rect selectionRect)
 	{
+		string path = AssetDatabase.GUIDToAssetPath(guid);
+		GameObject obj = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+		if(obj == null) return;
+
+		if (Path_UnityEditorGUIExtention.ShowMissingComponent)
+		{
+			var missingComponent = obj.GetComponentsInChildren<MonoBehaviour>().Any(c => c == null);
+			if (!missingComponent) return;
+
+			Rect rect = selectionRect;
+			rect.x = rect.xMax;
+			rect.width = 3;
+			GUI.Label(rect, "!", redTextStyle);
+		}
 	}
 }
