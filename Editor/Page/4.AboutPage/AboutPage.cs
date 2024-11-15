@@ -30,9 +30,9 @@ public class AboutPage : IPage
 
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
-        if (GUILayout.Button("https://blog.tonychenn.cn", blueTextStyle))
+        if (GUILayout.Button("https://tonychenn.cn", blueTextStyle))
         {
-            Application.OpenURL("https://blog.tonychenn.cn");
+            Application.OpenURL("https://tonychenn.cn");
         }
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();

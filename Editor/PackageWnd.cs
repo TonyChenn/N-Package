@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 
+[EditorWindowTitle(title = "Perference", icon = "d_Settings")]
 public class PackageWnd : EditorWindow
 {
-    private static bool m_needRefresh = false;
+	internal static PackageWnd instance { get; private set; }
+
+	private static bool m_needRefresh = false;
 
     private static string m_tag = null;
     private static string m_data = null;
@@ -14,8 +18,9 @@ public class PackageWnd : EditorWindow
     [MenuItem("Tools/Perference...")]
     public static void ShowWnd()
     {
-        GetWindow<PackageWnd>(false, "Perference", true);
-    }
+		instance = GetWindow<PackageWnd>();
+		instance.minSize = new Vector2(748, 250);
+	}
 
     public static void ShowWnd(string tag, string data = null)
     {
@@ -29,7 +34,15 @@ public class PackageWnd : EditorWindow
     #region 生命周期
     private void OnEnable()
     {
-        RefreshPageData();
+		// 抗锯齿
+		this.SetAntiAliasing(4);
+
+		if (instance == null) instance = this;
+		instance.minSize = new Vector2(748, 250);
+		if (instance != this) return;
+
+
+		RefreshPageData();
 
         m_needRefresh = true;
     }
@@ -44,11 +57,16 @@ public class PackageWnd : EditorWindow
         if (m_needRefresh)
             m_needRefresh = false;
     }
-    #endregion
+
+	private void OnDestroy()
+	{
+		instance = null;
+	}
+	#endregion
 
 
-    #region [左侧部分]
-    private Vector2 leftScrollPos;
+	#region [左侧部分]
+	private Vector2 leftScrollPos;
     private int selectedPageIndex;
     private void drawLeftSelection()
     {

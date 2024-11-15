@@ -13,14 +13,18 @@ public class PluginPage : IPage
     private int selectedPluginTypeIndex;
     public void DrawWndUI(EditorWindow window, object data = null)
     {
-        GUILayout.BeginVertical(GUILayout.Width(200), GUILayout.MinHeight(window.position.height - 10));
+		EditorGUILayout.BeginHorizontal();
+
+		GUILayout.BeginVertical(GUILayout.Width(200), GUILayout.MinHeight(window.position.height - 10));
         drawSearchGUI();
 
         GUILayout.BeginHorizontal();
         selectedPluginTypeIndex = GUILayout.SelectionGrid(selectedPluginTypeIndex, pluginTypeItems, 2);
         GUILayout.EndHorizontal();
         GUILayout.Space(5);
-        GUILayout.Button("", GUILayout.Height(1));
+		
+
+		GUILayout.Button("", GUILayout.Height(1));
         GUILayout.Space(10);
 
         pluginPos = GUILayout.BeginScrollView(pluginPos);
@@ -39,6 +43,8 @@ public class PluginPage : IPage
 
         GUILayout.EndVertical();
         GUILayout.Button("", GUILayout.Width(1), GUILayout.Height(window.position.height));
+
+		GUILayout.EndHorizontal();
     }
     private string searchText;
     private void drawSearchGUI()

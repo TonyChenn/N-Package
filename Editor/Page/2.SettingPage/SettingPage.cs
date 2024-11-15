@@ -33,6 +33,7 @@ public class SettingPage : IPage
 	{
 		refreshSelectedIndex(data);
 
+		EditorGUILayout.BeginHorizontal();
 		#region left section
 		GUILayout.BeginVertical(GUILayout.Width(200), GUILayout.MinHeight(window.position.height - 10));
 		GUILayout.Space(5);
@@ -87,6 +88,7 @@ public class SettingPage : IPage
 		}
 		GUILayout.EndVertical();
 		#endregion
+		EditorGUILayout.EndHorizontal();
 	}
 	private void refreshSelectedIndex(object data = null)
 	{

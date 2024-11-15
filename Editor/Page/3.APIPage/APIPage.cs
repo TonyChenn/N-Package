@@ -31,6 +31,8 @@ public class APIPage : IPage
     private Vector2 scrollPos;
     public void DrawWndUI(EditorWindow window, object data = null)
     {
+		EditorGUILayout.BeginHorizontal();
+
         float height = window.position.height;
         GUILayout.BeginVertical(GUILayout.Width(200), GUILayout.Height(height));
         DrawSearchGUI();
@@ -47,6 +49,8 @@ public class APIPage : IPage
 
 
         DrawAPIDetail(window.position);
+
+		EditorGUILayout.EndHorizontal();
     }
     private void DrawAPIDetail(Rect windowRect)
     {
